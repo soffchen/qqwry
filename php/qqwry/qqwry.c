@@ -40,12 +40,16 @@ static zend_class_entry *qqwry_class_entry_ptr = NULL;
 PHP_METHOD(qqwry,__construct)
 {
 	char *qqwry_path = NULL;
-	int qqwry_len;
+	size_t qqwry_len;
     zval * _this_zval = NULL;
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC,getThis(), "Os",&_this_zval,qqwry_class_entry_ptr, &qqwry_path,&qqwry_len) == FAILURE) {
         return;
     }
-	add_property_string(_this_zval,"f",qqwry_path,1);
+#if PHP_API_VERSION <= 20131106
+    add_property_string(_this_zval,"f",qqwry_path,1);
+#else
+	add_property_string(_this_zval,"f",qqwry_path);
+#endif
 }
 /* }}} */
 
@@ -54,23 +58,37 @@ PHP_METHOD(qqwry,__construct)
 PHP_METHOD(qqwry,q)
 {
 	char *ip_string = NULL;
-	int ipstring_len;
+	size_t ipstring_len;
     zval * _this_zval = NULL;
 
     if (zend_parse_method_parameters(ZEND_NUM_ARGS() TSRMLS_CC,getThis(), "Os",&_this_zval,qqwry_class_entry_ptr, &ip_string, &ipstring_len) == FAILURE) {
         return;
-    }   
+    }
+#if PHP_API_VERSION <= 20131106
 	zval *zaddr1,*zaddr2;
+	zval **tmp;
+#else
+	zval zaddr1,zaddr2;
+	zval *tmp;
+#endif
 	char *addr1=(char *)emalloc(QQWRY_ADDR1_LEN);
 	char *addr2=(char *)emalloc(QQWRY_ADDR2_LEN);
 	memset(addr1,0,QQWRY_ADDR1_LEN);
 	memset(addr2,0,QQWRY_ADDR2_LEN);
-	zval **tmp;
 	char *qqwry_path;
-	if (zend_hash_find(Z_OBJPROP_P(_this_zval),"f",sizeof("f"),(void **)&tmp)==FAILURE) {
+
+#if PHP_API_VERSION <= 20131106
+    if (zend_hash_find(Z_OBJPROP_P(_this_zval),"f",sizeof("f"),(void **)&tmp)==FAILURE) {
+            return;
+    }
+    qqwry_path=Z_STRVAL_PP(tmp);
+#else
+	zend_string *sp = zend_string_init("f", sizeof("f") - 1, 0);
+	if ((tmp = zend_hash_find(Z_OBJPROP_P(_this_zval), sp)) == NULL) {
 		return;
 	}
-	qqwry_path=Z_STRVAL_PP(tmp);
+	qqwry_path=Z_STRVAL_P(tmp);
+#endif
 
 	FILE *fp=NULL;
     qqwry_fp_list *qfl=QQWRY_G(fp_list);
@@ -106,14 +124,27 @@ PHP_METHOD(qqwry,q)
 	}
 
 	qqwry_get_location(addr1,addr2,ip_string,fp);
-	MAKE_STD_ZVAL(zaddr1);
-	ZVAL_STRING(zaddr1,addr1,0);
-	MAKE_STD_ZVAL(zaddr2);
-	ZVAL_STRING(zaddr2,addr2,0);
+
+#if PHP_API_VERSION <= 20131106
+    MAKE_STD_ZVAL(zaddr1);
+    ZVAL_STRING(zaddr1,addr1,0);
+    MAKE_STD_ZVAL(zaddr2);
+    ZVAL_STRING(zaddr2,addr2,0);
 
 	array_init(return_value);
     add_next_index_zval(return_value,zaddr1);
     add_next_index_zval(return_value,zaddr2);
+#else
+	ZVAL_STRING(&zaddr1,addr1);
+	efree(addr1);
+	ZVAL_STRING(&zaddr2,addr2);
+	efree(addr2);
+
+	array_init(return_value);
+    add_next_index_zval(return_value,&zaddr1);
+    add_next_index_zval(return_value,&zaddr2);
+#endif
+
 }
 /* }}} */
 
