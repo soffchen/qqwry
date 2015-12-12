@@ -1,0 +1,16 @@
+// $Id: config.w32 327850 2012-10-01 12:50:22Z ab $
+// vim:ft=javascript
+
+ARG_WITH("geoip", "GeoIP Support", "no");
+
+if (PHP_GEOIP == "yes") {
+	if (CHECK_HEADER_ADD_INCLUDE("geoip.h", "CFLAGS_GEOIP", PHP_GEOIP +  ";" + PHP_PHP_BUILD + "\\include\\geoip") &&
+		CHECK_LIB("geoip_a.lib;GeoIP.lib", "geoip", PHP_GEOIP)) {
+		AC_DEFINE('HAVE_GEOIP', 1, 'Have GeoIP support', false);
+		AC_DEFINE('LIBGEOIP_VERSION', 1004008, 'GeoIP Version');
+		AC_DEFINE('HAVE_CUSTOM_DIRECTORY', 1, 'Support for custom database directory');
+		EXTENSION("geoip", "geoip.c");
+	} else {
+		WARNING('Could not find geoip.h or geoip lib; skipping');
+	}
+}

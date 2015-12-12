@@ -1,0 +1,92 @@
+1.1.0-dev 2012-xx-xx
+
+ * Add geoip_setup_custom_directory() to setup custom directories per request.
+ * Remove E_NOTICES for IPs not found in database.
+ * Fix a segfault with geoip_db_get_all_info() on newer libs (bug #64692).
+ * Add support for geoip_netspeedcell_by_name(), geoip_asnum_by_name() and geoip_domain_by_name() (bug #67121).
+ * Fix memory leak with custom directories (bug #67138).
+ * Support changing custom directory via ini_set() (bug #61607).
+ 
+1.0.8	2011-10-23
+
+ * Windows support
+ * Fix segfault with newer geoip libraries and geoip_db_get_all_info() (bug #60066)
+ * Use X-Macros for repeated code
+ * Updated tests
+
+1.0.7	2009-03-11
+
+ * Do not issue a NOTICE when values don't exist for timezone and region name (as added in 1.0.4)
+ * Fix a compile issue on FreeBSD
+ * Try to be bulletproof on library features detection.
+
+1.0.6	2009-01-20
+
+ * Fixing compile bug when multiple GeoIP libs are installed, bug #15372
+
+1.0.5	2008-12-19
+
+ * Small bug in phpinfo() when printing version number could crash PHP.
+
+1.0.4	2008-12-19
+
+ * Fix memleaks, bug #14851
+ * Small patch for MacPorts by jhohle
+ * Add geoip_time_zone_by_country_and_region() and geoip_region_name_by_code() (thanks to Sid Dunayer)
+ * Add continent_code field for City Database, only if using GeoIP lib 1.4.3 or newer
+
+1.0.3	2008-06-12
+
+ * Change license from PHP 3.0 to PHP 3.01 for Debian?
+ * Added geoip_continent_code_by_name() to get continent instead of country
+ * Fixing a small casting issue (compiler warning)
+ * Fixing missing entries in geoip_record_by_name, bug #14131
+
+1.0.2	2007-11-20
+
+ * Added geoip_isp_by_name (patch by Yannick Gard)
+
+1.0.1	2007-08-22
+
+ * Added geoip_db_avail() to check for DB availability (file found)
+ * Added geoip_db_filename() to get the internal file name of the library
+ * Added geoip_db_get_all_info() to fetch all info about all database types
+ * Added some tests so that make test can crunch something.
+ * Added database file path and name in warning when DB is not found.
+ * Added geoip.custom_directory php.ini option to change default path for DBs
+
+1.0.0	2007-08-14
+
+ * Marked as stable
+ * Fixing wrong version number inside extension
+
+0.2.0	2006-08-22
+
+ * Initial PECL Release
+ * Fixing various memory leaks
+ * Registering the C API constants in PHP
+
+0.1.3	2006-7-10
+
+Following changes made by Olivier Hill
+	* Missing PHP function prototypes
+	* Fixing code foldings in Emacs
+	* Outputting E_NOTICES instead of E_WARNING when non fatal errors
+	* Return type of longitude/latitude should be DOUBLE and not LONG
+
+0.1.2	2006-5-19
+	* Following changes all contributed by Guenter Knauf
+- moved argument parsing up at various places before we create a GeoIP.
+- moved GeoIP_delete() call at various places up to get it called before we error out.
+- fixed one place where a missing return caused a segfault on all platforms because
+  RETURN_STRING() was called with NULL when GeoIP lookup failed.
+- added php.ini entry parsing; prepared for usage of geoip.database_standard var.
+  This works fine so far as you can test with the geoip_database_info() call which uses
+  the database configured with the geoip.database_standard var; if not set it defaults
+  to the usual place specified during compile time with GEOIPDATADIR. All other functions
+  currently still ignore the geoip.database_standard setting, but default usually also
+  to GEOIPDATADIR from what I see. Search for the dirty '//' comments ....
+	* Added config.m4, contributed by Jonathan Whiteman of cyberflowsolutions.com
+
+0.1.1	2005-9-21
+	* Initial release, contributed by Matthew Fonda

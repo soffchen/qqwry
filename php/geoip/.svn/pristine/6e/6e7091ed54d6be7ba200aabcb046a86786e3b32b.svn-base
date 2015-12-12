@@ -1,0 +1,28 @@
+/*
+  +----------------------------------------------------------------------+
+  | PHP Version 5                                                        |
+  +----------------------------------------------------------------------+
+  | Copyright (c) 2002-2009 The PHP Group                                |
+  +----------------------------------------------------------------------+
+  | This source file is subject to version 3.01 of the PHP license,      |
+  | that is bundled with this package in the file LICENSE, and is        |
+  | available through the world-wide-web at the following url:           |
+  | http://www.php.net/license/3_01.txt.                                 |
+  | If you did not receive a copy of the PHP license and are unable to   |
+  | obtain it through the world-wide-web, please send a note to          |
+  | license@php.net so we can mail you a copy immediately.               |
+  +----------------------------------------------------------------------+
+  | Author: Olivier Hill  <ohill@php.net>                                |
+  +----------------------------------------------------------------------+
+*/
+
+/* GEOIPDEF(php_func, c_func, db_type) */
+GEOIPDEF(geoip_country_code_by_name,	GeoIP_country_code_by_name,	GEOIP_COUNTRY_EDITION)
+GEOIPDEF(geoip_country_code3_by_name,	GeoIP_country_code3_by_name,	GEOIP_COUNTRY_EDITION)
+GEOIPDEF(geoip_country_name_by_name,	GeoIP_country_name_by_name,	GEOIP_COUNTRY_EDITION)
+
+#if LIBGEOIP_VERSION >= 1004005
+GEOIPDEF(geoip_country_code_by_name_v6,	GeoIP_country_code_by_name_v6,	GEOIP_COUNTRY_EDITION_V6)
+GEOIPDEF(geoip_country_code3_by_name_v6,	GeoIP_country_code3_by_name_v6,	GEOIP_COUNTRY_EDITION_V6)
+GEOIPDEF(geoip_country_name_by_name_v6,	GeoIP_country_name_by_name_v6,	GEOIP_COUNTRY_EDITION_V6)
+#endif
