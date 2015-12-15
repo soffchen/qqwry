@@ -18,13 +18,13 @@ sub qqwry {
     }
 
     my $addr;
-    $addr=`/usr/local/bin/qqwrynali $ip|iconv -f GBK -t $lang`;
+    $addr=`__QQWRYNALI $ip|iconv -f GBK -t $lang`;
 
     #if (index($iconv,"iconv")<0) {
     #    $addr=`qqwrynali $ip`;
     #} else {
     #    $iconv=~s/\n//g;
-    #    $addr=`/usr/local/bin/qqwrynali $ip|$iconv -f GBK -t $lang`;
+    #    $addr=`__QQWRYNALI $ip|$iconv -f GBK -t $lang`;
     #}
     $addr =~ s/\n//g;
     return "$ip\033[1;31m\[$addr\]\033[0m";
